@@ -2,7 +2,6 @@ require("dotenv").config();
 const express =require("express");
 const app=express()
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt")
 const PORT = process.env.PORT;
 app.use(express.json())
 const connectDB = async(req, res)=>{
@@ -16,8 +15,8 @@ const connectDB = async(req, res)=>{
 connectDB();
 
 
-const doctorRoutes = require("./Authroutes/UserRoute");
-const userRoutes = require("./Authroutes/DoctorRoute");
+const doctorRoutes = require("./Authroutes/DoctorRoute");
+const userRoutes = require("./Authroutes/UserRoute");
 const appointmentRoutes =require("./Authroutes/AppointmentRoute");
  const medicalRoutes = require("./Authroutes/MedicalRecordRoute");
 

@@ -29,7 +29,7 @@ const doctorProfileSchema = new mongoose.Schema({
 
     doctor:{
         type :mongoose .Schema.Types.ObjectId,
-        rsf :"User",
+        ref :"User",
         required:true
     }
 },{timestamps:true});   

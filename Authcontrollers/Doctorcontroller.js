@@ -1,12 +1,9 @@
 const express = require("express"); 
 const DoctorProfile = require("../models/DoctorProfile");   
-// Create a doctor profile
+
 const createDoctorProfile = async (req, res) =>{
 try {
     const { name, email, MobileNumber, specialization, consultationFee, workingDays, availableHours } = req.body;
-    if (!name || !email || !MobileNumber || !specialization || !consultationFee || !workingDays || !availableHours) {
-        return res.status(400).json({ message: "All fields are required" });
-    }
     const existingdoctor = await DoctorProfile.findOne({ email });
     if (existingdoctor) {
         return res.status(400).json({ message: "Doctor profile with this email already exists" });

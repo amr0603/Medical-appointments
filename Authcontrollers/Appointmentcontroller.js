@@ -2,11 +2,8 @@ const Appointment = require("../models/Appointment");
 
 const CreateAppointment = async (req , res)=>{
 try {
-    const { patientId , doctorId , slotTime } = req.body;
+    const { patient , doctor , slotTime } = req.body;
 
-if(!patientId || !doctorId || !slotTime){
-     return res.status(400).json({ message: "All fields are required" });
-}
 const timedate = new Date(slotTime);
 
 if (isNaN(timedate.getTime())) {
@@ -16,7 +13,7 @@ if (timedate < new Date()) {
     return res.status(400).json({ message: "Cannot book a slot in the past" });
 }
 const existingAppointment = await Appointment.findOne({ 
-    doctor: doctorId, 
+    doctor: doctor, 
     slotTime: timedate 
 });
 
@@ -24,8 +21,8 @@ if (existingAppointment) {
     return res.status(400).json({ message: "This slot is already booked" });
 }
 const appointment = new Appointment({
-    patient: patientId,
-    doctor: doctorId,   
+    patient: patient,
+    doctor: doctor,   
     slotTime: timedate
 });
 

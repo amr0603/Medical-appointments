@@ -3,10 +3,6 @@ const Medicalrecord = require("../models/MedicalRecord");
 const createMedicalRecord = async (req, res) => {
     try {
         const { diagnosis, prescription, notes, images, patientId, doctorId } = req.body;
-// const { diagnosis, prescription, notes, images, patientId, doctorId } = req.body;
-        if (!diagnosis || !prescription || !notes ) {
-            return res.status(400).json({ message: "All fields are required" });
-        }   
         const medicalRecord = new Medicalrecord({
             diagnosis,
             prescription,   

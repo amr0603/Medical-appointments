@@ -31,7 +31,7 @@ const medicalRecordSchema = new mongoose.Schema({
         }
     ],
 
-
+//التجهيز للصور المرفوعة: في MedicalRecord.js، قمت بتجهيز حقل images ليحتوي على url و public_id. هذا يوضح أنك تخطط لاستخدام خدمات سحابية مثل Cloudinary مستقبلاً، وهو تفكير ممتاز!
     patient:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",

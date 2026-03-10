@@ -8,6 +8,12 @@ const register = async(req , res)=>{
     try {
         const{username ,email , password, role}=req.body
 
+
+
+        if (role==="admin" || role === "staff"){
+            return res.status(403).json({ message:"not be create acount"})
+        }
+
             const existingUser =await User.findOne({email});
             if (existingUser) return res.status(400).json({message :"This email already exists",data:existingUser});
 
@@ -15,7 +21,7 @@ const register = async(req , res)=>{
                 const hashedPassword = await bcrypt.hash(password ,bcryptpassword);
 
                 const newUser= await User.create({
-                    username ,email , password,role,
+                    username ,email ,role,
                      password : hashedPassword,
                 });
                 res.status(200).json({message :"Registration completed successfully",data:newUser});
@@ -31,18 +37,15 @@ const register = async(req , res)=>{
 const login =async(req , res)=>{
     try{
     const { email, password } = req.body;
-    
-    if (!email || !password)
-      return res.status(400).json({ msg: "Missing Data" });
 
     const user = await User.findOne({ email });
     if (!user)
-      return res.status(404).json({ msg: "Your Account Not Found Please Create Account" });
+      return res.status(404).json({ message: "Your Account Not Found Please Create Account" });
 
 
     const matchPassword = await bcrypt.compare(password, user.password);
     if (!matchPassword)
-      return res.status(400).json({ msg: "Invalid Password" });
+      return res.status(400).json({ message: "Invalid Password" });
 
         const token = jwt.sign(
       {
