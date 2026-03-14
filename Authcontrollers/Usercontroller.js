@@ -15,8 +15,8 @@ const register = async(req , res)=>{
         }
 
             const existingUser =await User.findOne({email});
-            if (existingUser) return res.status(400).json({message :"This email already exists",data:existingUser});
-
+            if (existingUser) return res.status(400).json({message :"This email already exists",/*data:existingUser*/});
+                
                 const  bcryptpassword=await bcrypt.genSalt(10);
                 const hashedPassword = await bcrypt.hash(password ,bcryptpassword);
 
@@ -24,7 +24,7 @@ const register = async(req , res)=>{
                     username ,email ,role,
                      password : hashedPassword,
                 });
-                res.status(200).json({message :"Registration completed successfully",data:newUser});
+                res.status(201).json({message :"Registration completed successfully",data:newUser});
         
     } catch (error) {
         res.status(500).json({message :"An error occurred during registration",data:error.message});
@@ -40,18 +40,17 @@ const login =async(req , res)=>{
 
     const user = await User.findOne({ email });
     if (!user)
-      return res.status(404).json({ message: "Your Account Not Found Please Create Account" });
+      return res.status(401).json({ message: " Not Found email or password" });
 
-
+    
     const matchPassword = await bcrypt.compare(password, user.password);
     if (!matchPassword)
-      return res.status(400).json({ message: "Invalid Password" });
+      return res.status(401).json({ message: "Invalid Password" });
 
         const token = jwt.sign(
       {
         id: user._id,   
-        role: user.role,
-        },
+        role: user.role, },
         process.env.JWT_SECRET,
         {
             expiresIn: "1d",

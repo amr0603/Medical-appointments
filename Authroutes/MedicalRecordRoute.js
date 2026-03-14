@@ -4,10 +4,12 @@ const validate= require("../Validation/validate");
 const {MedicaiValidationSchema}=require("../Validation/MedicalValidation");
 const {createMedicalRecord,getMedicalRecord}= require("../Authcontrollers/MedicalRecordcontroller")
 
-const token=require("../Middleware/Middleware")
+const {token,checkRole}=require("../Middleware/Middleware")
 
 
-router.post("/",token,validate(MedicaiValidationSchema),createMedicalRecord);
-router.get("/:id",token,getMedicalRecord);
+
+router.post("/",token,checkRole,validate(MedicaiValidationSchema),createMedicalRecord);
+
+router.get("/:id",token,checkRole,getMedicalRecord);
 
 module.exports=router;

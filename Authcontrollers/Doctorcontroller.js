@@ -3,7 +3,7 @@ const DoctorProfile = require("../models/DoctorProfile");
 
 const createDoctorProfile = async (req, res) =>{
 try {
-    const { name, email, MobileNumber, specialization, consultationFee, workingDays, availableHours } = req.body;
+    const { name, email, MobileNumber, specialization, consultationFee, workingDays, availableHours, doctorId } = req.body;
     const existingdoctor = await DoctorProfile.findOne({ email });
     if (existingdoctor) {
         return res.status(400).json({ message: "Doctor profile with this email already exists" });
@@ -15,7 +15,8 @@ try {
         specialization,
         consultationFee,
         workingDays,
-        availableHours
+        availableHours,
+        doctor:doctorId//علشان نجيب id من body
     });
     await doctorProfile.save();
     res.status(201).json({ message: "Doctor profile created successfully" });
@@ -38,8 +39,26 @@ const getDoctorProfileById = async (req, res) => {
     }
 };
 
+const getalldocters=async(req ,res)=>{
+        try {
+            let query={};//متغير
+            const {specialization}=req.query;
+            if(specialization){
+                query.specialization=specialization;
+
+            }
+            const doctorsList = await DoctorProfile.find(query);
+            res.status(200).json({doctorsList});
+        } catch (error) {
+             res.status(500).json({ message: "Error fetching doctor profile", error });
+        }
+    
+
+}
+
 module.exports = {
     createDoctorProfile,
-    getDoctorProfileById
+    getDoctorProfileById,
+    getalldocters
 };
    

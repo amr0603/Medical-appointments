@@ -4,11 +4,11 @@ const mongoose = require("mongoose");
 const medicalRecordSchema = new mongoose.Schema({
     diagnosis:{ 
         type:String,
-        required:true
+        
     },
-    prescription:{
+    prescription:{// راي الباشا مهندس
         type:String,
-        required:true
+        
     },
     notes: {
         type: String,
@@ -41,8 +41,19 @@ const medicalRecordSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
         required:true
-    }
-},{timestamps:true});
+    },
+    addedBy: {
+        type: String,
+        enum: ['patient', 'doctor'],
+        required: true
+    },
+    appointment: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Appointment",
+    required: true
+}//عشان لو مريض كشف عند نفس الدكتور 5 مرات، نبقى عارفين الروشتة دي بتاعة أي حجز فيهم.
+},
+{timestamps:true});
 
 const MedicalRecord = mongoose.model("MedicalRecord", medicalRecordSchema);
 module.exports = MedicalRecord;

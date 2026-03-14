@@ -6,7 +6,9 @@ MobileNumber: joi.string().length(11).pattern(/^[0-9]+$/).required(),// ده ب�
 specialization:joi.string().required(),
 consultationFee:joi.number().required(),
 workingDays: joi.array().items(joi.string()).required(), 
-availableHours: joi.array().required() // راي الباشا مهندش
-})
+availableHours: joi.array().required(), // راي الباشا مهندش
+doctorId: joi.string().required()
+});
+
 
 module.exports={DoctorValidationSchema};

@@ -14,7 +14,6 @@ const doctorProfileSchema = new mongoose.Schema({
     MobileNumber:{
         type:String,
         required:true,
-        unique:true
     },  
     specialization:{
         type:String,    
@@ -24,12 +23,12 @@ const doctorProfileSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
-    workingDays:[String],
+    workingDays:[String],//مصفوفة
     availableHours:[String],
 
-    doctor:{
+    doctor:{ // تم الرابط مع User 
         type :mongoose .Schema.Types.ObjectId,
-        ref :"User",
+        ref :"User",// 
         required:true
     }
 },{timestamps:true});   
@@ -37,3 +36,10 @@ const doctorProfileSchema = new mongoose.Schema({
 const DoctorProfile = mongoose.model("DoctorProfile", doctorProfileSchema);
 
 module.exports = DoctorProfile;
+
+
+// availability: [{ راى الباشا مهندس
+//     day: { type: String },
+//     startTime: { type: String },
+//     endTime: { type: String }
+// }]

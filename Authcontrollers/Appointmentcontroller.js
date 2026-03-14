@@ -5,13 +5,15 @@ try {
     const { patient , doctor , slotTime } = req.body;
 
 const timedate = new Date(slotTime);
-
+//بتتأكد إن صيغة الوقت صحيحة
 if (isNaN(timedate.getTime())) {
     return res.status(400).json({ message: "Invalid slot time format" });
 }
+//بتتأكد إن الموعد مش في الماضي
 if (timedate < new Date()) {
     return res.status(400).json({ message: "Cannot book a slot in the past" });
 }
+//بتتأكد إن الموعد ده مش محجوز لنفس الدكتور
 const existingAppointment = await Appointment.findOne({ 
     doctor: doctor, 
     slotTime: timedate 
@@ -36,16 +38,32 @@ res.status(201).json(appointment);
 
 
 
+
+
 const getAppointments = async (req, res) => {
     try {
-        const appointments = await Appointment.find();
+        const appointments = await Appointment.find()
+        populate("patient", "username email") 
+            .populate("doctor", "username email");//هترجع البيانات كأرقام
         res.status(200).json(appointments);
     } catch (error) {
         res.status(500).json({ message: "Error fetching appointments", error: error.message });
     }       
 };
 
+// const getAvailableSlots = async (req, res) => {
+//     try {
+//         const {doctorid}=req.body;
+//         const {workingDays, availableHours,}=req.body;
+//         const appointments = await Appointment.find();
+//         res.status(200).json(appointments);
+//     } catch (error) {
+//         res.status(500).json({ message: "Error fetching appointments", error: error.message });
+//     }       
+// };
+
 module.exports = {
     CreateAppointment,
-    getAppointments
+    getAppointments,
+   
 };  
