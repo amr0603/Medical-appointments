@@ -2,14 +2,16 @@ const Medicalrecord = require("../models/MedicalRecord");
 // Create a new medical record
 const createMedicalRecord = async (req, res) => {
     try {
-        const { diagnosis, prescription, notes, images, patientId, doctorId } = req.body;
+        const { diagnosis, prescription, notes, images, patientId, doctorId ,appointmentId} = req.body;
         const medicalRecord = new Medicalrecord({
             diagnosis,
             prescription,   
             notes,
             images,
             patient: patientId,
-            doctor: doctorId
+            doctor: doctorId,
+            appointmentId:appointmentId,
+            addedBy: 'doctor'
         }); 
         await medicalRecord.save();
         res.status(201).json(medicalRecord);
@@ -21,7 +23,7 @@ const createMedicalRecord = async (req, res) => {
 const getMedicalRecord = async (req, res) => {
     try {
         const medicalRecord = await Medicalrecord.findById(req.params.id)
-        populate("patient", "username") // هيرجع اسم المريض
+        .populate("patient", "username") // هيرجع اسم المريض
             .populate("doctor", "username specialization");
         if (!medicalRecord) {
             return res.status(404).json({ message: "Medical record not found" });

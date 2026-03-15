@@ -47,7 +47,7 @@ const medicalRecordSchema = new mongoose.Schema({
         enum: ['patient', 'doctor'],
         required: true
     },
-    appointment: {
+    appointmentId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Appointment",
     required: true

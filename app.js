@@ -21,10 +21,10 @@ const appointmentRoutes =require("./Authroutes/AppointmentRoute");
  const medicalRoutes = require("./Authroutes/MedicalRecordRoute");
 
 
-app.use("/api", userRoutes);
-app.use("/api", doctorRoutes);
-app.use("/api", appointmentRoutes);
- app.use("/api", medicalRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/doctors", doctorRoutes);
+app.use("/api/appointments", appointmentRoutes);
+app.use("/api/medical-records", medicalRoutes);
 
 
 

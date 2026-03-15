@@ -8,7 +8,7 @@ const {token,checkRole}=require("../Middleware/Middleware")
 
 
 
-router.post("/",token,checkRole,validate(MedicaiValidationSchema),createMedicalRecord);
+router.post("/",token,checkRole("doctor"),validate(MedicaiValidationSchema),createMedicalRecord);
 
 router.get("/:id",token,checkRole,getMedicalRecord);
 
