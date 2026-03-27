@@ -10,6 +10,6 @@ const {token,checkRole}=require("../Middleware/Middleware")
 
 router.post("/",token,checkRole("doctor"),validate(MedicaiValidationSchema),createMedicalRecord);
 
-router.get("/:id",token,checkRole,getMedicalRecord);
+router.get("/:id",token,checkRole("doctor", "patient"),getMedicalRecord);
 
 module.exports=router;

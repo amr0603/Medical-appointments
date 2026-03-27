@@ -21,7 +21,7 @@ const token = async(req , res,next)=>{
     
     const checkRole = (...allowedRoles) => {
     return (req, res, next) => {
-        // 1. نتأكد إن الـ verifyToken اشتغل الأول وحفظ بيانات اليوزر
+        // 1. نتأكد إن الـ Token اشتغل الأول وحفظ بيانات اليوزر
         if (!req.user) {
             return res.status(401).json({ message: "Unauthorized. User not found." });
         }

@@ -43,7 +43,7 @@ res.status(201).json(appointment);
 const getAppointments = async (req, res) => {
     try {
         const appointments = await Appointment.find()
-        populate("patient", "username email") 
+        .populate("patient", "username email") 
             .populate("doctor", "username email");//هترجع البيانات كأرقام
         res.status(200).json(appointments);
     } catch (error) {
