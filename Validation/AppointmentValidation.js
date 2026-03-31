@@ -1,10 +1,10 @@
-const joi= require("joi");
+﻿const joi = require("joi");
 
-const AppointmentValidationSchema =joi.object({
-
-patient:joi.string().required(),// راي الباشا مهندس 
-
-doctor:joi.string().required(),// راي الباشا مهندس 
-slotTime:joi.date().iso().required(),
+const AppointmentValidationSchema = joi.object({
+  // Patient is derived from the auth token in the controller; if the client sends it, strip it.
+  patient: joi.any().strip(),
+  doctor: joi.string().required(),
+  slotTime: joi.date().iso().required(),
 });
-module.exports={AppointmentValidationSchema}; 
+
+module.exports = { AppointmentValidationSchema };

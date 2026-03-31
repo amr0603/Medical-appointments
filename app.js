@@ -1,11 +1,23 @@
 require("dotenv").config();
+
 const express =require("express");
-const app=express()
-const mongoose = require("mongoose");
+
 const cors = require("cors");
 
-const PORT = process.env.PORT;
+
+
+const mongoose = require("mongoose");
+const app=express()
+
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 app.use(express.json())
+
+const PORT = process.env.PORT;
+
+
 
 
 const connectDB = async(req, res)=>{
@@ -23,12 +35,14 @@ const doctorRoutes = require("./Authroutes/DoctorRoute");
 const userRoutes = require("./Authroutes/UserRoute");
 const appointmentRoutes =require("./Authroutes/AppointmentRoute");
  const medicalRoutes = require("./Authroutes/MedicalRecordRoute");
+ const patientRoutes = require('./Authroutes/PatientRoute');
 
 
 app.use("/api/users", userRoutes);
 app.use("/api/doctors", doctorRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/medical-records", medicalRoutes);
+app.use("/api/Patient", patientRoutes );
 
 
 

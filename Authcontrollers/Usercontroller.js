@@ -6,14 +6,27 @@ const bcrypt = require("bcrypt");
 
 const register = async(req , res)=>{
     try {
-        const{username ,email , password, role}=req.body
+        const{username ,email , password, role, secretCode}=req.body
 
+            let userRole = "patient";
 
-
-        if (role==="admin" || role === "staff"){
-            return res.status(403).json({ message:"not be create acount"})
+            if (role === "doctor") {
+           
+            if (secretCode !== process.env.DOCTOR_SECRET_KEY) {
+                return res.status(403).json({ message: "كود التحقق الخاص بالأطباء غير صحيح!" });
+            }
+            userRole = "doctor"; 
         }
-
+        else if (role === "staff") {
+            if (secretCode !== process.env.STAFF_SECRET_KEY) {
+                return res.status(403).json({ message: "كود التحقق الخاص بالموظفين غير صحيح!" });
+            }
+            userRole = "staff";
+        }
+        else if (role === "admin") {
+          
+            return res.status(403).json({ message: "غير مسموح بإنشاء حساب مسؤول (Admin) بهذه الطريقة." });
+        }
             const existingUser =await User.findOne({email});
             if (existingUser) return res.status(400).json({message :"This email already exists",/*data:existingUser*/});
                 
@@ -21,13 +34,15 @@ const register = async(req , res)=>{
                 const hashedPassword = await bcrypt.hash(password ,bcryptpassword);
 
                 const newUser= await User.create({
-                    username ,email ,role,
+                    username ,
+                    email ,
+                    role:userRole,
                      password : hashedPassword,
                 });
                 res.status(201).json({message :"Registration completed successfully",data:newUser});
         
     } catch (error) {
-        res.status(500).json({message :"An error occurred during registration",data:error.message});
+        res.status(500).json({message :"An error occurred during registration",error: error.message});
         
     }
 };
@@ -59,6 +74,11 @@ const login =async(req , res)=>{
     res.status(200).json({
         msg: "Success Login",
         token,
+        user: {
+            id: user._id,
+            username: user.username,
+            role: user.role
+        }
     });
     } catch (error) {
         res.status(500).json({message :"An error occurred during login" ,data:error.message});

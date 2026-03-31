@@ -41,15 +41,13 @@ const uploadPatientDocument = async (req, res) => {
         // الـ ID بتاع المريض هنجيبه من الـ Token (بعد ما نشغل الـ Middleware)
         const patientId = req.user.id; 
 
-        const newDocument = new Medicalrecord({
+        const newDocument = await Medicalrecord.create({
             notes,
             images,
             patient: patientId,
             doctor: doctorId,
             addedBy: 'patient' // السيستم بيسجل إن المريض هو اللي رفعها
         }); 
-
-        await newDocument.save();
         res.status(201).json({ message: "Document uploaded successfully", data: newDocument });
     } catch (error) {
         res.status(500).json({ message: "Server error", error: error.message });
